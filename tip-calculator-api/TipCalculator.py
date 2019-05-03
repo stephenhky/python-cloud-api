@@ -6,8 +6,8 @@ taxrates = {'MD': 0.06, 'VA': 0.06, 'DC': 0.10}
 def calculate_tips(subtotal, state, tippercent=0.15, split=1):
     if state not in ('MD', 'VA', 'DC'):
         state = 'MD'
-    tax = subtotal * (1+taxrates[state])
-    tips = subtotal * (1+tippercent)
+    tax = subtotal * taxrates[state]
+    tips = subtotal * tippercent
     total = subtotal + tax + tips
     onesplit = total / split
 
