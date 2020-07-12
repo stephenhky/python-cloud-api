@@ -1,4 +1,13 @@
 
+# Deploy a Flask App on AWS EC2: https://www.codementor.io/@jqn/deploy-a-flask-app-on-aws-ec2-13hp1ilqy2
+# Example: https://medium.com/@rodkey/deploying-a-flask-application-on-aws-a72daba6bb80
+
+# Keras example
+# Article 1: https://towardsdatascience.com/deploying-a-keras-deep-learning-model-as-a-web-application-in-p-fc0f2354a7ff
+# Article 2: https://towardsdatascience.com/deploying-a-python-web-app-on-aws-57ed772b2319
+
+# Security: https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
+
 from flask import Flask, jsonify, request
 
 
