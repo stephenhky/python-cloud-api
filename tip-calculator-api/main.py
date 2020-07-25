@@ -30,7 +30,7 @@ def calculate_tips(subtotal, state, tippercent=0.15, split=1):
             'total': total, 'onesplit': onesplit}
 
 
-@app.route('/tipcalculator',methods=['GET'])
+@app.route('/tipcalculator', methods=['GET'])
 def get_tips():
     data = request.get_json(force=True)
     subtotal = data['subtotal']
@@ -43,4 +43,4 @@ def get_tips():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)
