@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/get/<number>')
 def fixed_monthly_payment(L, r, n):
-    return L * (r*(1+r)*n) / ((1+r)*n - 1)
+    return L * (r*(1+r)**n) / ((1+r)**n - 1)
 
 
 if __name__ == '__main__':
