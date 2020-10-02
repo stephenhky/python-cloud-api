@@ -2,6 +2,9 @@ org: stephenhky
 app: aws-kwan-financial-portfolio
 service: aws-kwan-financial-portfolio
 
+plugins:
+  - serverless-python-requirements
+  -
 provider:
   name: aws
   runtime: python3.8
