@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import traceback
 
-from finsim.portfolio import get_optimized_portfolio
+from finsim.portfolio import get_optimized_portfolio_on_sharpe_ratio
 
 
 def get_optimized_portfolio(event, context):
@@ -26,7 +26,7 @@ def get_optimized_portfolio(event, context):
     lazy = input_parameters.get('lazy', False)
 
     try:
-        optimized_portfolio = get_optimized_portfolio(
+        optimized_portfolio = get_optimized_portfolio_on_sharpe_ratio(
             rf,
             symbols,
             totalworth,
