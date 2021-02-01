@@ -5,7 +5,8 @@ from finsim.portfolio.create import get_optimized_portfolio_on_mpt_entropy_costf
 
 def portfolio_handler(event, context):
     # getting query
-    query = json.loads(event['body'])
+    # query = json.loads(event['body'])
+    query = event['body']
 
     # getting parameter
     rf = query['rf']
@@ -16,7 +17,7 @@ def portfolio_handler(event, context):
     estimating_enddate = query['estimating_enddate']
     riskcoef = query.get('riskcoef', 0.3)
     homogencoef = query.get('homogencoef', 0.1)
-    V = query('V', 10.0)
+    V = query.get('V', 10.0)
 
     optimized_portfolio = get_optimized_portfolio_on_mpt_entropy_costfunction(
         rf,
@@ -30,6 +31,15 @@ def portfolio_handler(event, context):
         V=V,
         lazy=False
     )
+
+    portfolio_summary = optimized_portfolio.portfolio_summary
+    corr = portfolio_summary['correlation']
+    portfolio_summary['correlation'] = [
+        [
+            corr[i, j] for j in range(corr.shape[1])
+        ]
+        for i in range(corr.shape[0])
+    ]
 
     req_res = {
         'statusCode': 200,
