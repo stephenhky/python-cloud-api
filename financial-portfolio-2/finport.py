@@ -1,12 +1,16 @@
 
+import logging
+
 import json
 from finsim.portfolio.create import get_optimized_portfolio_on_mpt_entropy_costfunction
 
 
 def portfolio_handler(event, context):
-    # getting query
-    # query = json.loads(event['body'])
-    query = event['body']
+    # getting qu
+    logging.info(event)
+    logging.info(context)
+    query = json.loads(event['body'])
+    # query = event['body']
 
     # getting parameter
     rf = query['rf']
@@ -40,11 +44,13 @@ def portfolio_handler(event, context):
         ]
         for i in range(corr.shape[0])
     ]
+    event['portfolio'] = portfolio_summary
 
+    # reference of a lambda output to API gateway: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
     req_res = {
+        'isBase64Encoded': False,
         'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps(event),
-        'portfolio': optimized_portfolio.portfolio_summary
+        # 'headers': {'Content-Type': 'application/json'},
+        'body': json.dumps(event)
     }
     return req_res
