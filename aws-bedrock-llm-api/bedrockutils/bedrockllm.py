@@ -1,28 +1,33 @@
 
+import json
+
 import boto3
 from langchain.llms.bedrock import Bedrock
 from langchain.chains import LLMChain
 from botocore.config import Config
 
 
-retry_config = Config(
-    region_name='us-east-1',
-    retries = {
-        'max_attempts': 10,
-        'mode': 'standard'
-    }
-)
+
+get_bedrock_runtime = lambda region_name: boto3.client(service_name='bedrock-runtime', region_name=region_name)
 
 
-def get_bedrock_llm_instance(model_id, model_kwargs):
-    session = boto3.session.Session(profile_name='tesdl-ml-beta')
-    boto3_bedrock = session.client('bedrock', config=retry_config)
-    boto3_bedrock_runtime = session.client('bedrock-runtime', config=retry_config)
+def call_bedrock_models(prompt_config, model_id, bedrock_runtime):
+    body = json.dumps(prompt_config)
 
-    llm = Bedrock(
-        model_id=model_id,
-        client=boto3_bedrock_runtime,
-        model_kwargs=model_kwargs
+    accept = 'application/json'
+    content_type = 'application/json'
+
+    response = bedrock_runtime.invoke_model(
+        body=body,
+        modelId=model_id,
+        accept=accept,
+        contentType=content_type
     )
+    response_body = json.loads(response.get('body').read())
 
-    return llm
+    results = response_body.get('outputs')[0].get('text')
+    return results
+
+
+def get_langchain_bedrock_llm(model_id, client, *args, **kwargs):
+    return Bedrock(model_id=model_id, client=client, *args, **kwargs)
