@@ -1,5 +1,6 @@
 
 import json
+import logging
 
 import boto3
 
@@ -24,3 +25,29 @@ def call_bedrock_models(prompt_config, model_id, bedrock_runtime):
     results = response_body.get('outputs')[0].get('text')
     return results
 
+
+def lambda_handler(events, context):
+    # get query
+    # query = json.loads(events)['body']
+    query = events['body']
+    logging.info(query)
+    print(query)
+
+    # get bedrock runtime
+    bedrock_runtime = get_bedrock_runtime('us-east-1')
+
+    # get prompts
+    prompt = query['prompt']
+
+    # get model config
+    config = query['config']
+    model_id = query['model_id']
+    body = {'prompt': prompt} | config
+
+    # call model
+    results = call_bedrock_models(body, model_id, bedrock_runtime)
+
+    return {
+        'statusCode': 200,
+        'body': results
+    }
