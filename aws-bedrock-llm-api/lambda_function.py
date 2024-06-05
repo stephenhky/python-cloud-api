@@ -28,10 +28,16 @@ def call_bedrock_models(prompt_config, model_id, bedrock_runtime):
 
 def lambda_handler(events, context):
     # get query
-    # query = json.loads(events)['body']
-    query = events['body']
-    logging.info(query)
-    print(query)
+    logging.info(events)
+    print(events)
+    if isinstance(events['body'], dict):
+        logging.info("dictionary")
+        print("dictionary")
+        query = events['body']
+    else:
+        logging.info("string")
+        print("string")
+        query = json.loads(events['body'])
 
     # get bedrock runtime
     bedrock_runtime = get_bedrock_runtime('us-east-1')
