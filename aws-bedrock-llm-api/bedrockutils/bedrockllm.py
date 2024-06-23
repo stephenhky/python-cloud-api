@@ -4,7 +4,8 @@ import json
 import boto3
 
 
-get_bedrock_runtime = lambda region_name: boto3.client(service_name='bedrock-runtime', region_name=region_name)
+def get_bedrock_runtime(region_name, *args, **kwargs):
+    return boto3.client(service_name='bedrock-runtime', region_name=region_name, *args, **kwargs)
 
 
 def call_bedrock_models(prompt_config, model_id, bedrock_runtime):
